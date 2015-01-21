@@ -2,7 +2,7 @@ component extends="mura.bean.beanORM" entityName="activity" table="msactivities"
 
 	property name="activityid" fieldtype="id";
     property name="id" required=true type="integer" message="The Strava ID is required";
-    property name="athleteid" type="integer";
+    property name="athleteid" type="string";
     property name="resource_state" type="integer";
 	property name="name" type="string" length="255" required=true message="The name attribute is required.";
     property name="description" type="text";

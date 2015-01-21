@@ -196,9 +196,9 @@ http://www.apache.org/licenses/LICENSE-2.0
 
 			<!-- App1 is a FW/1 sub-application -->
 			<displayobject
-					name="MuraFW1 App1"
+					name="Athlete Profile"
 					component="includes.displayObjects"
-					displaymethod="dspMuraFW1App1"
+					displaymethod="dspMuraStravaMuraStrava"
 					persist="false" />
 
 			<!-- App2 is a FW/1 sub-application -->

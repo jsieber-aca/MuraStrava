@@ -36,6 +36,9 @@ component persistent="false" accessors="true" output="false" extends="mura.plugi
 			on any given page, then you can set variables.framework.siloSubsystems = false; 
 			in the file located at /includes/fw1config.cfm 
 	*/
+    public any function dspMuraStravaMuraStrava($) {
+        return getApplication().doAction('muraStrava:main.athlete');
+    }
 
 	public any function dspMuraFW1App1($) {
 		return getApplication().doAction('app1:main.default');

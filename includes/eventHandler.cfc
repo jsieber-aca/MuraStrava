@@ -34,19 +34,30 @@ component persistent="false" accessors="true" output="false" extends="mura.plugi
 			.checkSchema();
 
 		$.getServiceFactory()
-			.declareBean(beanName='gear',dottedPath='plugins.MuraStrava.model.entity.gear', isSingleton=false)
-			.getBean('gear')
+			.declareBean(beanName='bike',dottedPath='plugins.MuraStrava.model.entity.bike', isSingleton=false)
+			.getBean('bike')
 			.checkSchema();
 
 		$.getServiceFactory()
 			.declareBean(beanName='activity',dottedPath='plugins.MuraStrava.model.entity.activity', isSingleton=false)
 			.getBean('activity')
 			.checkSchema();
+
+        /*
+        $.getServiceFactory()
+			.declareBean(beanName='gear',dottedPath='plugins.MuraStrava.model.entity.gear', isSingleton=false)
+			.getBean('gear')
+			.checkSchema();
+        */
+		
+application.muraStrava = new plugins.MuraStrava.model.service.strava(variables.pluginConfig.getsettings().client_id, variables.pluginConfig.getsettings().client_secret);
+		application.callback = "http://local.john-sieber.com/plugins/MuraStrava/index.cfm?MuraStravamsaction=main.callback";
 	}
 
 	public void function onSiteRequestStart(required struct $) {
 		// make the methods in displayObjects.cfc accessible via $.packageName.methodName()
 		arguments.$.setCustomMuraScopeKey(variables.framework.package, new displayObjects());
+		//arguments.$.setCustomMuraScopeKey('muraStrava', new plugins.MuraStrava.model.service.strava());
 	}
 
 	public any function onRenderStart(required struct $) {
