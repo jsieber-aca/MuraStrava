@@ -24,6 +24,11 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 			var $ = rc.$;
 			set$(rc.$);
 		}
+		// writedump(var="#request#", abort=true, top=3);
+		// Verify that API login has been setup.
+		if ( ! len( $.currentUser('stravaToken')) && ! findNoCase("login", request.action) && ! findNoCase("callback", request.action) ) {
+			fw.redirect(action='admin:main.login');
+		}
 
 		// easy access to site attributes
 		// rc.settingsManager = rc.$.getBean('settingsManager');

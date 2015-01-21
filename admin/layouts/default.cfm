@@ -78,8 +78,11 @@ http://www.apache.org/licenses/LICENSE-2.0
 							<li class="<cfif rc.action eq 'admin:main.default'>active</cfif>">
 								<a href="#buildURL('admin:main')#"><i class="icon-home"></i> Home</a>
 							</li>
-							<li class="<cfif rc.action eq 'admin:main.another'>active</cfif>">
-								<a href="#buildURL('admin:main.another')#"><i class="icon-leaf"></i> Another Page</a>
+							<li class="<cfif rc.action eq 'admin:main.athleteProfile'>active</cfif>">
+								<a href="#buildURL('admin:main.athleteProfile')#"><i class="icon-leaf"></i> Athlete Profile</a>
+							</li>
+                            <li class="<cfif rc.action eq 'admin:main.importAthlete'>active</cfif>">
+								<a href="#buildURL('admin:main.importAthlete')#"><i class="icon-leaf"></i> Import Athlete</a>
 							</li>
 						</ul>
 					</div>
