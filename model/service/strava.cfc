@@ -98,7 +98,7 @@ component {
             return data;
         }
 
-        public struct function getCurrentAthlete(accessToken){
+        public struct function getCurrentAthelete(accessToken){
             var apiRequestUrl = "https://www.strava.com/api/v3/athlete";
             var data = getData(apiRequestUrl, arguments.accessToken);
             return data;
@@ -119,6 +119,12 @@ component {
                 return data;
             }
         }
+        
+        public struct function getTotalsAndStats(accessToken, athleteID){
+            var apiRequestUrl = "https://www.strava.com/api/v3/athletes/#arguments.athleteID#/stats";
+            var data = getData(apiRequestUrl, arguments.accessToken, variables.perPage);
+            return data;
+        }
 
         public array function getK_QOMs_CRs(accessToken, athleteID){
             var apiRequestUrl = "https://www.strava.com/api/v3/athletes/#arguments.athleteID#/koms";
@@ -128,7 +134,7 @@ component {
 
         public struct function validateResult(code, error) {
             var result = {};
-            //writeDump(var="I'm here!", abort=true);
+
             if(error != ""){
                 result.status = false;
                 result.message = error;
@@ -155,8 +161,8 @@ component {
             var httpCall = new http();
             httpCall.setURL("https://www.strava.com/oauth/token");
             httpCall.setMethod("post");
-            httpCall.addParam(type="URL", name="client_id", value="#variables.client_id#");
-            httpCall.addParam(type="URL", name="client_secret", value="#variables.client_secret#");
+            httpCall.addParam(type="URL", name="client_id", value="#application.client_id#");
+            httpCall.addParam(type="URL", name="client_secret", value="#application.client_secret#");
             httpCall.addParam(type="URL", name="code", value="#arguments.code#");
             httpCall.setResolveURL(true);
             var result = httpCall.send().getPrefix();
