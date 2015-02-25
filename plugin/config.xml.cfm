@@ -194,11 +194,18 @@ http://www.apache.org/licenses/LICENSE-2.0
 					name="MuraFW1 Simple Display Object"
 					displayobjectfile="includes/display_objects/simple.cfm" />
 
-			<!-- App1 is a FW/1 sub-application -->
+			<!-- Athlete Profile is a FW/1 sub-application -->
 			<displayobject
 					name="Athlete Profile"
 					component="includes.displayObjects"
 					displaymethod="dspMuraStravaMuraStrava"
+					persist="false" />
+            
+            <!-- Athlete Profile is a FW/1 sub-application -->
+            <displayobject
+					name="Athlete Totals and Stats"
+					component="includes.displayObjects"
+					displaymethod="dspMuraStravaTotalsAndStats"
 					persist="false" />
 
 			<!-- App2 is a FW/1 sub-application -->

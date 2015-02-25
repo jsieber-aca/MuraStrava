@@ -38,18 +38,22 @@ component persistent="false" accessors="true" output="false" extends="mura.plugi
 			.getBean('bike')
 			.checkSchema();
 
+        $.getServiceFactory()
+			.declareBean(beanName='shoe',dottedPath='plugins.MuraStrava.model.entity.shoe', isSingleton=false)
+			.getBean('shoe')
+			.checkSchema();
+
+		$.getServiceFactory()
+			.declareBean(beanName='club',dottedPath='plugins.MuraStrava.model.entity.club', isSingleton=false)
+			.getBean('club')
+			.checkSchema();
+
 		$.getServiceFactory()
 			.declareBean(beanName='activity',dottedPath='plugins.MuraStrava.model.entity.activity', isSingleton=false)
 			.getBean('activity')
 			.checkSchema();
 
-        /*
-        $.getServiceFactory()
-			.declareBean(beanName='gear',dottedPath='plugins.MuraStrava.model.entity.gear', isSingleton=false)
-			.getBean('gear')
-			.checkSchema();
-        */
-		
+
 application.muraStrava = new plugins.MuraStrava.model.service.strava(variables.pluginConfig.getsettings().client_id, variables.pluginConfig.getsettings().client_secret);
 		application.callback = "http://local.john-sieber.com/plugins/MuraStrava/index.cfm?MuraStravamsaction=main.callback";
 	}
