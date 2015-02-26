@@ -12,7 +12,7 @@ component persistent="false" accessors="true" output="false" extends="controller
 	// *********************************  PAGES  *******************************************
 
     public any function athleteProfile(required rc) {
-        rc.athleteProfile = application.muraStrava.getCurrentAthlete($.currentUser('stravaToken'));
+        rc.athleteProfile = application.muraStrava.getCurrentAthlete();
     }
 
 
@@ -49,7 +49,7 @@ component persistent="false" accessors="true" output="false" extends="controller
         //writeDump(var="#page#", abort=true);
 
         while (continue eq true) {
-            stravaActivities = application.muraStrava.getActivities($.currentUser('stravaToken'), arguments.perPage, page, 1);
+            stravaActivities = application.muraStrava.getActivities(arguments.perPage, page, 1);
             //writeDump(var="#stravaActivities#", abort=true);
             if(arrayLen(stravaActivities) lt arguments.perPage){
                 continue = false;
@@ -98,7 +98,7 @@ component persistent="false" accessors="true" output="false" extends="controller
     }
 
 	public any function importAthlete(required rc) {
-        rc.stravaAthlete = application.muraStrava.getCurrentAthlete($.currentUser('stravaToken'));
+        rc.stravaAthlete = application.muraStrava.getCurrentAthlete();
         rc.athlete = $.getBean('athlete').loadBy(id=rc.stravaAthlete.id);
 
         //writeDump(var="#rc.athlete.getAllValues()#", abort=true);
@@ -164,7 +164,6 @@ component persistent="false" accessors="true" output="false" extends="controller
 		param name="url.code" default="";
 		param name="url.state" default="";
 		param name="url.error" default="";
-		//writeDump(var="#application.muraStrava.convertCelsiusToFahrenheit(0)#", abort=true);
 		rc.result = application.muraStrava.validateResult(url.code, url.error);
 
 		if (rc.result.status) {

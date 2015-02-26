@@ -153,6 +153,19 @@ http://www.apache.org/licenses/LICENSE-2.0
 				<optionlabellist>One^Two^Three</optionlabellist> -->
 			</setting>
 			<setting>
+				<name>client_token</name>
+				<label>Strava API Client Token</label>
+				<hint>Strava API Client Token</hint>
+				<type>text</type>
+				<required>true</required>
+				<validation>none</validation>
+			<!--	<regex>your javascript regex goes here (if validation=regex)</regex> -->
+				<message>Please enter your Strava API client Secret</message>
+				<defaultvalue></defaultvalue>
+			<!--	<optionlist>1^2^3</optionlist>
+				<optionlabellist>One^Two^Three</optionlabellist> -->
+			</setting>
+			<setting>
 				<name>callback</name>
 				<label>Strava API Redirect Url</label>
 				<hint>Strava API Redirect Url</hint>
@@ -200,7 +213,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 					component="includes.displayObjects"
 					displaymethod="dspMuraStravaMuraStrava"
 					persist="false" />
-            
+
             <!-- Athlete Profile is a FW/1 sub-application -->
             <displayobject
 					name="Athlete Totals and Stats"
@@ -233,6 +246,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 			See /default/includes/themes/MuraBootstrap/config.xml.cfm
 			for examples.
 		-->
+		<!---
 		<extensions>
 			<extension type="User" subType="Default">
 				<attributeset name="Mura Strava Token" container="Basic">
@@ -240,7 +254,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 						name="stravaToken"
 						label="Strava api token"
 						hint="Strava Api token stored in this hidden field"
-						type="hidden"
+						type="text"
 						defaultValue=""
 						required="false"
 						validation=""
@@ -251,7 +265,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 				</attributeset>
 			</extension>
 		</extensions>
-
+		--->
 
 		<!--
 			ImageSizes:
