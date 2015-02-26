@@ -37,9 +37,11 @@ component persistent="false" accessors="true" output="false" extends="mura.plugi
 			in the file located at /includes/fw1config.cfm 
 	*/
     public any function dspMuraStravaMuraStrava($) {
-        return getApplication().doAction('muraStrava:main.athlete');
+        return getApplication().doAction('muraStrava:main.default');
     }
-
+    public any function dspMuraStravaTotalsAndStats($) {
+        return getApplication().doAction('totalsAndStats:main.default');
+    }
 	public any function dspMuraFW1App1($) {
 		return getApplication().doAction('app1:main.default');
 	}

@@ -25,6 +25,6 @@ component extends="mura.bean.beanORM" entityName="athlete" table="msathletes" us
     property name="email" type="string" length="150";
     //property name="ftp" type="string";
 	property name="bikes" singularname="bike" fieldtype="one-to-many" cfc="bike" cascade="delete";
-	//property name="gears" singularname="gear" fieldtype="one-to-many" cfc="gear" fkcolumn="athleteid"  cascade="all";
-	//property name="gears" singularname="gear" type="array" fieldtype="one-to-many" cfc="gear" fkcolumn="athleteid";
+	property name="clubs" singularname="club" fieldtype="one-to-many" cfc="club" cascade="delete";
+    property name="activities" singularname="activity" fieldtype="one-to-many" cfc="activity" cascade="delete";
 }
