@@ -1,8 +1,9 @@
 component {
 
-    public function init(client_id, client_secret){
+    public function init(client_id, client_secret, client_token){
         variables.client_id = arguments.client_id;
         variables.client_secret = arguments.client_secret;
+        variables.client_token = arguments.client_token;
         variables.perPage = 200;
         return this;
     }
@@ -86,49 +87,50 @@ component {
 
         }
 
-        public function getActivityMap(accessToken, activityID){
+        public function getActivityMap( activityID){
            var apiRequestUrl = "https://www.strava.com/api/v3/activities/#arguments.activityID#";
-           var data = getData(apiRequestUrl, arguments.accessToken);
+           var data = getData(apiRequestUrl);
            return data;
         }
 
-        public function getActivities(accessToken){
+        public function getActivities(){
             var apiRequestUrl = "https://www.strava.com/api/v3/athlete/activities";
-            var data = getData(apiRequestUrl, arguments.accessToken, variables.perPage);
+            var data = getData(apiRequestUrl, variables.perPage);
             return data;
         }
 
-        public struct function getCurrentAthlete(accessToken){
+        public struct function getCurrentAthlete(){
             var apiRequestUrl = "https://www.strava.com/api/v3/athlete";
-            var data = getData(apiRequestUrl, arguments.accessToken);
+            var data = getData(apiRequestUrl);
             return data;
         }
 
-        private any function getData(url, accessToken, perPage){
+        private any function getData(url, perPage){
             var httpCall = new http();
+
             httpCall.setURL("#arguments.url#");
             httpCall.setMethod("get");
-            httpCall.addParam(type="URL", name="access_token", value="#arguments.accessToken#");
+            httpCall.addParam(type="URL", name="access_token", value="#variables.client_token#");
             httpCall.addParam(type="URL", name="per_page", value="#arguments.perPage#");
             httpCall.setResolveURL(true);
             var result = httpCall.send().getPreFix();
             var data = deserializeJSON(result.filecontent);
             if(isStruct(data) && structKeyExists(data, "errors") && isArray(data.errors)){
-                writeDump(var="#data.errors[1].field# #data.errors[1].code#", abort=true);
+                writeDump(var="#data#", abort=true);
             }else{
                 return data;
             }
         }
-        
-        public struct function getTotalsAndStats(accessToken, athleteID){
+
+        public struct function getTotalsAndStats(athleteID){
             var apiRequestUrl = "https://www.strava.com/api/v3/athletes/#arguments.athleteID#/stats";
-            var data = getData(apiRequestUrl, arguments.accessToken, variables.perPage);
+            var data = getData(apiRequestUrl, variables.perPage);
             return data;
         }
 
-        public array function getK_QOMs_CRs(accessToken, athleteID){
+        public array function getK_QOMs_CRs(athleteID){
             var apiRequestUrl = "https://www.strava.com/api/v3/athletes/#arguments.athleteID#/koms";
-            var data = getData(apiRequestUrl, arguments.accessToken, variables.perPage);
+            var data = getData(apiRequestUrl, variables.perPage);
             return data;
         }
 

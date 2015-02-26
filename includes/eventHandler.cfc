@@ -54,7 +54,7 @@ component persistent="false" accessors="true" output="false" extends="mura.plugi
 			.checkSchema();
 
 
-application.muraStrava = new plugins.MuraStrava.model.service.strava(variables.pluginConfig.getsettings().client_id, variables.pluginConfig.getsettings().client_secret);
+application.muraStrava = new plugins.MuraStrava.model.service.strava(variables.pluginConfig.getsettings().client_id, variables.pluginConfig.getsettings().client_secret, variables.pluginConfig.getsettings().client_token);
 		application.callback = "http://local.john-sieber.com/plugins/MuraStrava/index.cfm?MuraStravamsaction=main.callback";
 	}
 

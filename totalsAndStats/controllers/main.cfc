@@ -21,8 +21,8 @@ component persistent="false" accessors="true" extends="controller" output="false
 	}
 
     public any function default(required struct rc) {
-        var athleteId = application.muraStrava.getCurrentAthelete(rc.$.currentUser('stravaToken')).id;
-        rc.totalsAndStatsData = application.muraStrava.getTotalsAndStats(rc.$.currentUser('stravaToken'), athleteID);
+        var athleteId = application.muraStrava.getCurrentAthlete().id;
+        rc.totalsAndStatsData = application.muraStrava.getTotalsAndStats(athleteID);
         //writeDump(var="#rc.totalsAndStatsData#", abort=true);
     }
 
