@@ -9,8 +9,12 @@
         <cfdump var="#rc.club.save().getErrors()#">
         <p>Uh Oh!</p>
     <cfelse>
-        <cfdump var="#rc.athlete.getAllValues()#">
-        <cfdump var="#rc.athlete.getBikes()#">
-            <cfdump var="#rc.athlete.getClubs()#">
+      <div class="alert alert-success">#arrayLen(rc.activities.newActivities)# new activities added</div>
+      <div class="alert alert-danger">#arrayLen(rc.activities.skippedActivities)# skipped activities</div>
+    <!---<cfdump var="#rc.activities#" abort=true>
+         <cfdump var="#rc.athlete.getAllValues()#">
+         <cfdump var="#rc.athlete.getBikes()#">
+         <cfdump var="#rc.athlete.getClubs()#">
+     --->
     </cfif>
 </cfoutput>

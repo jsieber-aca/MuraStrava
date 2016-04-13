@@ -25,7 +25,10 @@ component persistent="false" accessors="true" output="false" extends="controller
         var page = 1;
         var stravaActivities = "";
         var activity = {};
-        var theActivity = {}
+        var theActivity = {};
+				var results = {newActivities="", skippedActivities=""};
+				var newActivities = [];
+				var skippedActivities = [];
         var keyListIgnore = "returnFormat,removeobjects, errors, frommuracache, isnew, instanceid, addobjects, activityid, athlete";
         /*
         param name="theActivity.achievement_count" default="";
@@ -46,8 +49,8 @@ component persistent="false" accessors="true" output="false" extends="controller
         param name="theActivity.truncated" default="";
         */
 
-        //writeDump(var="#page#", abort=true);
-
+				//writeLog(text="start", file="importActivity");
+			  //abort;
         while (continue eq true) {
             stravaActivities = application.muraStrava.getActivities(arguments.perPage, page, 1);
             //writeDump(var="#stravaActivities#", abort=true);
@@ -62,6 +65,7 @@ component persistent="false" accessors="true" output="false" extends="controller
                 theActivity = $.getBean('activity').loadBy(id=activity.id);
 
                 if(theActivity.getIsNew()){
+										//writeLog(text="New activity - #activity.id#", file="importActivity");
                     //writeDump(var="#theActivity.getAllValues()#", top=3, abort=true);
                     try{
                         for (key in theActivity.getAllValues()){
@@ -74,32 +78,48 @@ component persistent="false" accessors="true" output="false" extends="controller
                             }
                         }
                         //writeDump(var="#activity#", abort=true);
-                        //abort;
+
                         activity["athleteid"] = activity.athlete.id;
                         //structDelete(activity, "athlete");
 
                         theActivity.setAllValues(activity);
 
                         theActivity.save();
+
+												newActivities.append(theActivity.getName());
+
                         if(isStruct(theActivity.getErrors()) AND !structIsEmpty(theActivity.getErrors())){
                             writeDump(var="#theActivity.getErrors()#", top=3, abort=false);
                             writeDump(var="#theActivity.getAllValues()#", top=3, abort=true);
                         }
-                        writeDump(var="#theActivity.getactivityId()#", top=3, abort=false, label="new record");
+                        //writeDump(var="#theActivity.getactivityId()#", top=3, abort=false, label="new record");
                     }
                     catch(any e){
                         writedump(var="#e#", top=3, abort=true);
                     }
                 }else{
-                     writeDump(var="#theActivity.getactivityId()#", top=3, abort=false, label="not new");
+
+										 skippedActivities.append(theActivity.getName());
+
+										 //writeLog(text="Existing activity - #activity.id#", file="importActivity");
+                     //writeDump(var="#theActivity.getactivityId()#", top=3, abort=false, label="not new");
                 }
+								structUpdate(results, "newActivities", newActivities);
+								structUpdate(results, "skippedActivities", skippedActivities);
             }
+						//writeDump(var="100", abort=true);
+
+						return results;
         }
+
     }
 
 	public any function importAthlete(required rc) {
         rc.stravaAthlete = application.muraStrava.getCurrentAthlete();
         rc.athlete = $.getBean('athlete').loadBy(id=rc.stravaAthlete.id);
+
+				//writeLog(text="start", file="importActivity");
+			  //writeDump(var="I'm here.", abort=true);
 
         //writeDump(var="#rc.athlete.getAllValues()#", abort=true);
         //writeDump(var="#rc.stravaAthlete#", abort=true);
@@ -151,7 +171,7 @@ component persistent="false" accessors="true" output="false" extends="controller
             rc.club.save();
         }
 
-        var activities = importActivities(rc, 200);
+        rc.activities = importActivities(rc, 200);
     }
 
     public any function login(required rc) {
