@@ -6,7 +6,7 @@ Copyright 2010-2014 Stephen J. Withington, Jr.
 Licensed under the Apache License, Version v2.0
 http://www.apache.org/licenses/LICENSE-2.0
 
-	NOTES: 
+	NOTES:
 		Edit the setSessionCache() method to alter the 'expires' key.
 		Defaults to 1 hour. The sessionCache will also expire
 		if the application has been reloaded.
@@ -18,14 +18,14 @@ http://www.apache.org/licenses/LICENSE-2.0
 component persistent="false" accessors="true" output="false" extends="includes.fw1" {
 
 	include 'includes/fw1config.cfm'; // framework variables
-	include '../../config/applicationSettings.cfm';
+	include '../../core/appcfc/applicationSettings.cfm';
 	include '../../config/mappings.cfm';
 	include '../mappings.cfm';
 
 	variables.fw1Keys = 'SERVICEEXECUTIONCOMPLETE,LAYOUTS,CONTROLLEREXECUTIONCOMPLETE,VIEW,SERVICES,CONTROLLERS,CONTROLLEREXECUTIONSTARTED';
 
 	public string function doAction(string action='') {
-		var p = variables.framework.package; 
+		var p = variables.framework.package;
 		var fwa = variables.framework.action;
 		var local = {};
 
@@ -42,8 +42,8 @@ component persistent="false" accessors="true" output="false" extends="includes.f
 
 		restoreFlashContext();
 
-		request.context[fwa] = StructKeyExists(form, fwa) 
-			? form[fwa] : StructKeyExists(url, fwa) 
+		request.context[fwa] = StructKeyExists(form, fwa)
+			? form[fwa] : StructKeyExists(url, fwa)
 			? url[fwa] : StructKeyExists(request, fwa)
 			? request[fwa] : getFullyQualifiedAction(arguments.action);
 
@@ -51,16 +51,16 @@ component persistent="false" accessors="true" output="false" extends="includes.f
 
 		// viewKey: package_subsystem_section_item
 		local.viewKey = UCase(
-			p 
-			& '_' & getSubSystem(arguments.action) 
+			p
+			& '_' & getSubSystem(arguments.action)
 			& '_' & getSection(arguments.action)
 			& '_' & getItem(arguments.action)
 		);
 
-		local.response = variables.framework.siloSubsystems 
+		local.response = variables.framework.siloSubsystems
 			? getCachedView(local.viewKey) : '';
 
-		local.newViewRequired = !Len(local.response) 
+		local.newViewRequired = !Len(local.response)
 			? true : getSubSystem(arguments.action) == getSubSystem(request.context[fwa])
 			? true : false;
 
@@ -102,7 +102,7 @@ component persistent="false" accessors="true" output="false" extends="includes.f
 
 		// Bean Factory (uses DI/1)
 		// Be sure to pass in your comma-separated list of folders to scan for CFCs
-		local.beanFactory = new includes.factory.ioc('/#variables.framework.package#/app2/model,/#variables.framework.package#/app3/model');
+		local.beanFactory = new includes.factory.ioc('/#variables.framework.package#/app2/model,/#variables.framework.package#/app3/model,/#variables.framework.package#/MuraStrava/model');
 
 		// optionally set Mura to be the parent beanFactory
 		local.parentBeanFactory = application.serviceFactory;
@@ -126,8 +126,8 @@ component persistent="false" accessors="true" output="false" extends="includes.f
 
 		request.context.isAdminRequest = isAdminRequest();
 		request.context.isFrontEndRequest = isFrontEndRequest();
-		
-		if ( StructKeyExists(url, application.configBean.getAppReloadKey()) ) { 
+
+		if ( StructKeyExists(url, application.configBean.getAppReloadKey()) ) {
 			setupApplication();
 			//setupApplicationWrapper();
 		}
@@ -149,24 +149,24 @@ component persistent="false" accessors="true" output="false" extends="includes.f
 		request.context.pluginConfig = application[variables.framework.applicationKey].pluginConfig;
 		request.context.action = request.context[variables.framework.action];
 	}
-	
+
 	public void function setupView() {
 		var httpRequestData = GetHTTPRequestData();
-		if ( 
-			StructKeyExists(httpRequestData.headers, 'X-#variables.framework.package#-AJAX') 
-			&& IsBoolean(httpRequestData.headers['X-#variables.framework.package#-AJAX']) 
-			&& httpRequestData.headers['X-#variables.framework.package#-AJAX'] 
+		if (
+			StructKeyExists(httpRequestData.headers, 'X-#variables.framework.package#-AJAX')
+			&& IsBoolean(httpRequestData.headers['X-#variables.framework.package#-AJAX'])
+			&& httpRequestData.headers['X-#variables.framework.package#-AJAX']
 		) {
 			setupResponse();
 		}
 	}
-	
+
 	public void function setupResponse() {
 		var httpRequestData = GetHTTPRequestData();
 		if (
-			StructKeyExists(httpRequestData.headers, 'X-#variables.framework.package#-AJAX') 
-			&& IsBoolean(httpRequestData.headers['X-#variables.framework.package#-AJAX']) 
-			&& httpRequestData.headers['X-#variables.framework.package#-AJAX'] 
+			StructKeyExists(httpRequestData.headers, 'X-#variables.framework.package#-AJAX')
+			&& IsBoolean(httpRequestData.headers['X-#variables.framework.package#-AJAX'])
+			&& httpRequestData.headers['X-#variables.framework.package#-AJAX']
 		) {
 			StructDelete(request.context, 'fw');
 			StructDelete(request.context, '$');
@@ -179,10 +179,10 @@ component persistent="false" accessors="true" output="false" extends="includes.f
 		var regx = '&?compactDisplay=[true|false]';
 		arguments.action = getFullyQualifiedAction(arguments.action);
 		if (
-			StructKeyExists(request.context, 'compactDisplay') 
-			&& IsBoolean(request.context.compactDisplay) 
-			&& !REFindNoCase(regx, arguments.action) 
-			&& !REFindNoCase(regx, arguments.queryString) 
+			StructKeyExists(request.context, 'compactDisplay')
+			&& IsBoolean(request.context.compactDisplay)
+			&& !REFindNoCase(regx, arguments.action)
+			&& !REFindNoCase(regx, arguments.queryString)
 		) {
 			var qs = 'compactDisplay=' & request.context.compactDisplay;
 			if ( !Find('?', arguments.action) ) {
@@ -209,31 +209,32 @@ component persistent="false" accessors="true" output="false" extends="includes.f
 			return arguments.path;
 		}
 
-		var uri =  getPageContext().getRequest().getRequestURI();
+        var uri =  getPageContext().getRequest().getRequestURI();
 		var arrURI = ListToArray(uri, '/');
+		var indexPos = ArrayFind(arrURI, 'index.cfm');
 		var useIndex = YesNoFormat(application.configBean.getValue('indexfileinurls'));
 		var useSiteID = YesNoFormat(application.configBean.getValue('siteidinurls'));
 
-		if ( useSiteID && !useIndex ) {
-			ArrayDeleteAt(arrURI, 2);
+		if ( !useIndex && indexPos ) {
+			ArrayDeleteAt(arrURI, indexPos);
 			uri = '/' & ArrayToList(arrURI, '/') & '/';
 		}
 
-		return !useSiteID && !useIndex
-			? '/' & ListRest(uri, '/')
-			: uri;
+		return uri;
+
+
 	}
 
 	public any function isFrameworkInitialized() {
 		return super.isFrameworkInitialized() && StructKeyExists(application[variables.framework.applicationKey], 'cache');
 	}
 
-	
+
 	// ========================== Errors & Missing Views ==========================
 
 		public any function onError() output="true" {
 			//var scopes = 'application,arguments,cgi,client,cookie,form,local,request,server,session,url,variables';
-			var scopes = 'local,request,session';
+			var scopes = 'local,request,arguments';
 			var arrScopes = ListToArray(scopes);
 			var i = '';
 			var scope = '';
@@ -264,9 +265,9 @@ component persistent="false" accessors="true" output="false" extends="includes.f
 
 		public any function secureRequest() {
 			return !isAdminRequest() || (StructKeyExists(session, 'mura') && ListFindNoCase(session.mura.memberships,'S2')) ? true :
-					!StructKeyExists(session, 'mura') 
-					|| !StructKeyExists(session, 'siteid') 
-					|| !application.permUtility.getModulePerm(application[variables.framework.applicationKey].pluginConfig.getModuleID(), session.siteid) 
+					!StructKeyExists(session, 'mura')
+					|| !StructKeyExists(session, 'siteid')
+					|| !application.permUtility.getModulePerm(application[variables.framework.applicationKey].pluginConfig.getModuleID(), session.siteid)
 						? goToLogin() : true;
 		}
 
@@ -322,8 +323,8 @@ component persistent="false" accessors="true" output="false" extends="includes.f
 
 		private boolean function isCacheExpired() {
 			var p = variables.framework.package;
-			return !StructKeyExists(session, p) 
-					|| DateCompare(now(), session[p].expires, 's') == 1 
+			return !StructKeyExists(session, p)
+					|| DateCompare(now(), session[p].expires, 's') == 1
 					|| DateCompare(application.appInitializedTime, session[p].created, 's') == 1
 				? true : false;
 		}

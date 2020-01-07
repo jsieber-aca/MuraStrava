@@ -49,7 +49,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 			ProviderURL :
 			URL of the creator/organization that developed the plugin.
 		-->
-		<providerURL>http://john-sieber.com</providerURL>
+		<providerURL>https://john-sieber.com</providerURL>
 
 		<!-- Category : Usually either 'Application' or 'Utility' -->
 		<category>Application</category>
@@ -153,6 +153,19 @@ http://www.apache.org/licenses/LICENSE-2.0
 				<optionlabellist>One^Two^Three</optionlabellist> -->
 			</setting>
 			<setting>
+				<name>client_token</name>
+				<label>Strava API Client Token</label>
+				<hint>Strava API Client Token</hint>
+				<type>text</type>
+				<required>true</required>
+				<validation>none</validation>
+			<!--	<regex>your javascript regex goes here (if validation=regex)</regex> -->
+				<message>Please enter your Strava API client Secret</message>
+				<defaultvalue></defaultvalue>
+			<!--	<optionlist>1^2^3</optionlist>
+				<optionlabellist>One^Two^Three</optionlabellist> -->
+			</setting>
+			<setting>
 				<name>callback</name>
 				<label>Strava API Redirect Url</label>
 				<hint>Strava API Redirect Url</hint>
@@ -165,6 +178,35 @@ http://www.apache.org/licenses/LICENSE-2.0
 			<!--	<optionlist>1^2^3</optionlist>
 				<optionlabellist>One^Two^Three</optionlabellist> -->
 			</setting>
+
+			<setting>
+				<name>mapboxId</name>
+				<label>Mapbox ID</label>
+				<hint>Mapbox API user id</hint>
+				<type>text</type>
+				<required>true</required>
+				<validation>none</validation>
+			<!--	<regex>your javascript regex goes here (if validation=regex)</regex> -->
+				<message>Please enter your Mapbox API user id</message>
+				<defaultvalue></defaultvalue>
+			<!--	<optionlist>1^2^3</optionlist>
+				<optionlabellist>One^Two^Three</optionlabellist> -->
+			</setting>
+
+			<setting>
+				<name>mapboxAccessToken</name>
+				<label>Mapbox Access Token</label>
+				<hint>Mapbox API access token</hint>
+				<type>text</type>
+				<required>true</required>
+				<validation>none</validation>
+			<!--	<regex>your javascript regex goes here (if validation=regex)</regex> -->
+				<message>Please enter your Mapbox API user id</message>
+				<defaultvalue></defaultvalue>
+			<!--	<optionlist>1^2^3</optionlist>
+				<optionlabellist>One^Two^Three</optionlabellist> -->
+			</setting>
+
 
 		</settings>
 
@@ -194,11 +236,31 @@ http://www.apache.org/licenses/LICENSE-2.0
 					name="MuraFW1 Simple Display Object"
 					displayobjectfile="includes/display_objects/simple.cfm" />
 
-			<!-- App1 is a FW/1 sub-application -->
+			<!-- Athlete Profile is a FW/1 sub-application -->
 			<displayobject
-					name="MuraFW1 App1"
+					name="Athlete Profile"
 					component="includes.displayObjects"
-					displaymethod="dspMuraFW1App1"
+					displaymethod="dspMuraStravaMuraStrava"
+					persist="false" />
+
+      <!-- Athlete Profile is a FW/1 sub-application -->
+      <displayobject
+					name="Athlete Totals and Stats"
+					component="includes.displayObjects"
+					displaymethod="dspMuraStravaTotalsAndStats"
+					persist="false" />
+
+      <!-- Display Shoe Data is a FW/1 sub-application -->
+      <displayobject
+					name="Display Shoe Data"
+					component="includes.displayObjects"
+					displaymethod="dspShoeData"
+					persist="false" />
+			<!-- Display Shoe Data is a FW/1 sub-application -->
+      <displayobject
+					name="Display Races"
+					component="includes.displayObjects"
+					displaymethod="dspRaceData"
 					persist="false" />
 
 			<!-- App2 is a FW/1 sub-application -->
@@ -226,14 +288,47 @@ http://www.apache.org/licenses/LICENSE-2.0
 			See /default/includes/themes/MuraBootstrap/config.xml.cfm
 			for examples.
 		-->
+
 		<extensions>
 			<extension type="User" subType="Default">
-				<attributeset name="Mura Strava Token" container="Basic">
+				<attributeset name="Mura Strava Access Token" container="Basic">
 					<attribute
-						name="stravaToken"
-						label="Strava api token"
-						hint="Strava Api token stored in this hidden field"
-						type="hidden"
+						name="access_token"
+						label="Strava API access token"
+						hint="Strava API temporary access token"
+						type="text"
+						defaultValue=""
+						required="false"
+						validation=""
+						regex=""
+						message=""
+						optionList=""
+						optionLabelList="" />
+				</attributeset>
+			</extension>
+			<extension type="User" subType="Default">
+				<attributeset name="Mura Strava Refresh Token" container="Basic">
+					<attribute
+						name="refresh_token"
+						label="Strava API refresh token"
+						hint="Strava API refresh token"
+						type="text"
+						defaultValue=""
+						required="false"
+						validation=""
+						regex=""
+						message=""
+						optionList=""
+						optionLabelList="" />
+				</attributeset>
+			</extension>
+			<extension type="User" subType="Default">
+				<attributeset name="Mura Access Token Expiration" container="Basic">
+					<attribute
+						name="expires_at"
+						label="Strava API access token expires at"
+						hint="Strava API access token expiration."
+						type="text"
 						defaultValue=""
 						required="false"
 						validation=""
