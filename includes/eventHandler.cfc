@@ -68,7 +68,7 @@ component persistent="false" accessors="true" output="false" extends="mura.plugi
 
 		application.muraStrava = new plugins.MuraStrava.model.service.strava(variables.pluginConfig.getsettings().client_id, variables.pluginConfig.getsettings().client_secret, variables.pluginConfig.getsettings().client_token);
 		application.activityService = new plugins.MuraStrava.model.service.activityService();
-		application.callback = "https://john-sieber.com/plugins/MuraStrava/index.cfm?MuraStravamsaction=main.callback";
+		application.callback = "http://#cgi.http_host#/plugins/MuraStrava/index.cfm?MuraStravamsaction=main.callback";
 
 		var APIUtility = getBean('settingsManager').getSite('johnsieber').getAPI('json', 'v1');
 		APIUtility.registerEntity(entityName='activity', config={fields='activityid,name,description,type,start_date_local,achievement_count,kudos_count,distance,moving_time,elapsed_time,total_elevation_gain,average_cadence,average_speed, max_speed,suffer_score,calories,average_heartrate,max_heartrate,map,mapid',allowfieldselect=true,public=true});
