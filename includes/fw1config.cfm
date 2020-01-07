@@ -27,7 +27,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 
 	variables.framework.reloadApplicationOnEveryRequest =true; // change to TRUE if you're developing the plugin so you can see changes in your controllers, etc. ... otherwise, set to FALSE for production
 
-	variables.framework.trace = false; // if true, will print out debugging/tracing info at the bottom of ea. page (within the Plugin's Administration area only)
+	variables.framework.trace = true; // if true, will print out debugging/tracing info at the bottom of ea. page (within the Plugin's Administration area only)
 
 	// the 'action' defaults to your packageNameAction, (e.g., 'MuraFW1action') you may want to update this to something else.
 	// please try to avoid using simply 'action' so as not to conflict with other FW1 plugins
