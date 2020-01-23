@@ -24,14 +24,11 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 			var $ = rc.$;
 			set$(rc.$);
 		}
+		pluginConfig = $.getBean('pluginManager').getConfig('MuraStrava');
 		// writedump(var="#request#", abort=true, top=3);
 		// Verify that API login has been setup.
-<<<<<<< HEAD
 		//$.currentUser('access_token', '');
-		if ( ! len( $.currentUser('access_token')) && ! findNoCase("login", request.action) && ! findNoCase("callback", request.action) ) {
-=======
-		if ( ! len( $.currentUser('stravaToken')) && ! findNoCase("login", request.action) && ! findNoCase("callback", request.action) ) {
->>>>>>> c4d25150914c1f8990f027ba38f623d3d3301121
+		if ( (! len( pluginConfig.getsettings().access_token) || ! len(pluginConfig.getSettings().expires_at)) && ! findNoCase("login", request.action) && ! findNoCase("callback", request.action) ) {
 			fw.redirect(action='admin:main.login');
 		}
 

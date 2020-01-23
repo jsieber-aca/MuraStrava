@@ -214,10 +214,9 @@ component persistent="false" accessors="true" output="false" extends="controller
 		rc.result = application.muraStrava.validateResult(url.code, url.error);
     //writeDump(var=rc.result, label="callback results", abort=true);
 		if (rc.result.status) {
-			$.currentUser('access_token', rc.result.access_token);
-      $.currentUser('refresh_token', rc.result.refresh_token);
-      $.currentUser('expires_at', rc.result.expires_at);
-			$.currentUser().save();
+			variables.pluginConfig.setsetting('access_token', rc.result.access_token);
+      variables.pluginConfig.setsetting('refresh_token', rc.result.refresh_token);
+      variables.pluginConfig.setsetting('expires_at', rc.result.expires_at);
 			fw.redirect(action='admin:main');
 		}
 	}

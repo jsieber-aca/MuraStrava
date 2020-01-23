@@ -12,6 +12,7 @@ component {
           m = application.serviceFactory.getBean('m').init(siteid);
           $ = m;
         }
+        variables.pluginConfig = $.getBean('pluginManager').getConfig('MuraStrava');
         return this;
     }
 
@@ -158,12 +159,12 @@ component {
 
         // chnage this to pass these variables in or load mura scope.
         private function getAccessToken(){
-
-          //writedump(var=dateCompare(epochToDate($.currentUser('expires_at')), now()), abort=true);
-          if(dateCompare(epochToDate($.currentUser('expires_at')), now()) eq 1){
-            return $.currentUser('access_token');
+          //variables.pluginConfig.setsetting('access_token', '12345');
+          //writedump(var=variables.pluginConfig.getsettings().access_token, abort=true);
+          if(dateCompare(epochToDate($.pluginConfig.getsettings().expires_at), now()) eq 1){
+            return $.pluginConfig.getsettings().access_token;
           }else{
-            return refreshToken($.currentUser('refresh_token'));
+            return refreshToken($.pluginConfig.getsettings().refresh_token);
           }
         }
 
@@ -229,10 +230,9 @@ component {
           var result = httpCall.send().getPrefix();
           //writeDump(var=result, abort=true);
           var stravaAuthResponse = deserializeJSON(result.filecontent);
-          $.currentUser('access_token', stravaAuthResponse.access_token);
-          $.currentUser('refresh_token', stravaAuthResponse.refresh_token);
-          $.currentUser('expires_at', stravaAuthResponse.expires_at);
-    			$.currentUser().save();
+          variables.pluginConfig.setsetting('access_token', stravaAuthResponse.access_token);
+          variables.pluginConfig.setsetting('refresh_token', stravaAuthResponse.refresh_token);
+          variables.pluginConfig.setsetting('expires_at', stravaAuthResponse.expires_at);
           //writeDump(var="#stravaAuthResponse#", label="refreshResponse", abort=true);
           return $.currentUser('access_token');
 
