@@ -36,56 +36,22 @@ http://www.apache.org/licenses/LICENSE-2.0
 <cfsavecontent variable="local.newBody">
 	<cfoutput>
 		<div class="container-murafw1">
+			<div class="mura-header">
+				<h1>#HTMLEditFormat(rc.pc.getPackage())#</h1>
+				 		<div class="nav-module-specific btn-group">
+								<a href="#buildURL('admin:main')#" class="btn"><i class="icon-home"></i> Home</a>
+								<a href="#buildURL('admin:main.athleteProfile')#" class="btn"><i class="icon-leaf"></i> Athlete Profile</a>
+								<a href="#buildURL('admin:main.importAthlete')#" class="btn"><i class="icon-leaf"></i> Import Athlete</a>
+								<!---
+									<a href="#buildURL('admin:main.createPages')#"><i class="icon-leaf"></i> Create Pages</a>
+								--->
+					  </div>
+			</div> <!-- /.mura-header -->
 
-			<!--- PRIMARY NAV --->
-			<div class="row-fluid">
-				<div class="navbar navbar-murafw1">
-					<div class="navbar-inner">
-
-						<a class="plugin-brand" href="#buildURL('admin:main')#">#HTMLEditFormat(rc.pc.getPackage())#</a>
-
-						<ul class="nav">
-							<li class="<cfif rc.action contains 'admin:main'>active</cfif>">
-								<a href="##" class="dropdown-toggle" data-toggle="dropdown">Main <b class="caret"></b></a>
-								<ul class="dropdown-menu">
-									<li class="<cfif rc.action eq 'admin:main.default'>active</cfif>">
-										<a href="#buildURL('admin:main')#"><i class="icon-home"></i> Home</a>
-									</li>
-									<li class="<cfif rc.action contains 'admin:main.another'>active</cfif>">
-										<a href="#buildURL('admin:main.another')#"><i class="icon-leaf"></i> Another Page</a>
-									</li>
-								</ul>
-							</li>
-							<li class="<cfif rc.action contains 'admin:license'>active</cfif>">
-								<a href="#buildURL('admin:license')#"><i class="icon-book"></i> License</a>
-							</li>
-							<li class="<cfif rc.action contains 'admin:instructions'>active</cfif>">
-								<a href="#buildURL('admin:instructions')#"><i class="icon-info-sign"></i> Instructions</a>
-							</li>
-						</ul><!--- /.nav --->
-
-					</div><!--- /.navbar-inner --->
-				</div><!--- /.navbar --->
-			</div><!--- /.row --->
 
 			<!--- MAIN CONTENT AREA --->
 			<div class="row-fluid">
 				<cfif rc.action contains 'admin:main'>
-
-					<!--- SUB-NAV --->
-					<div class="span3">
-						<ul class="nav nav-list murafw1-sidenav">
-							<li class="<cfif rc.action eq 'admin:main.default'>active</cfif>">
-								<a href="#buildURL('admin:main')#"><i class="icon-home"></i> Home</a>
-							</li>
-							<li class="<cfif rc.action eq 'admin:main.athleteProfile'>active</cfif>">
-								<a href="#buildURL('admin:main.athleteProfile')#"><i class="icon-leaf"></i> Athlete Profile</a>
-							</li>
-                            <li class="<cfif rc.action eq 'admin:main.importAthlete'>active</cfif>">
-								<a href="#buildURL('admin:main.importAthlete')#"><i class="icon-leaf"></i> Import Athlete</a>
-							</li>
-						</ul>
-					</div>
 
 					<!--- BODY --->
 					<div class="span9">

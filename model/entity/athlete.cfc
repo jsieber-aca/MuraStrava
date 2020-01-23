@@ -1,9 +1,9 @@
 component extends="mura.bean.beanORM" entityName="athlete" table="msathletes" usetrash=true {
 
-	property name="athleteid" fieldtype="id" unique="true";
+		property name="athleteid" fieldtype="id" unique="true";
     property name="id" required=true type="integer" unique="true" message="The Strava ID is required.";
     property name="resource_state" type="integer";
-	property name="firstname" type="string" length="100" required=true message="The firstname attribute is required.";
+		property name="firstname" type="string" length="100" required=true message="The firstname attribute is required.";
     property name="lastname" type="string" length="100" required=true message="The lastname attribute is required.";
     property name="profile_medium" type="string" length="255";
     property name="profile" type="string" length="255";
@@ -24,7 +24,7 @@ component extends="mura.bean.beanORM" entityName="athlete" table="msathletes" us
     property name="measurement_preference" type="string" length="10";
     property name="email" type="string" length="150";
     //property name="ftp" type="string";
-	property name="bikes" singularname="bike" fieldtype="one-to-many" cfc="bike" cascade="delete";
-	property name="clubs" singularname="club" fieldtype="one-to-many" cfc="club" cascade="delete";
-    property name="activities" singularname="activity" fieldtype="one-to-many" cfc="activity" cascade="delete";
+		property name="bikes" singularname="bike" fieldtype="one-to-many" cfc="bike" cascade="delete";
+		property name="clubs" singularname="club" fieldtype="one-to-many" cfc="club" cascade="delete";
+	  property name="activities" singularname="activity" fieldtype="one-to-many" cfc="activity" cascade="delete";
 }

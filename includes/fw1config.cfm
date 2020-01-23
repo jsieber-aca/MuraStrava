@@ -25,7 +25,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 
 	variables.framework.debugMode = true; // if TRUE, then additional information is returned by the Application.onError() method
 
-	variables.framework.reloadApplicationOnEveryRequest = true; // change to TRUE if you're developing the plugin so you can see changes in your controllers, etc. ... otherwise, set to FALSE for production
+	variables.framework.reloadApplicationOnEveryRequest =true; // change to TRUE if you're developing the plugin so you can see changes in your controllers, etc. ... otherwise, set to FALSE for production
 
 	variables.framework.trace = true; // if true, will print out debugging/tracing info at the bottom of ea. page (within the Plugin's Administration area only)
 

@@ -15,6 +15,20 @@ component persistent="false" accessors="true" output="false" extends="controller
         rc.athleteProfile = application.muraStrava.getCurrentAthlete();
     }
 
+		public any function createPages(required rc){
+			var activities = $.getBean('activity').getFeed();
+			it = activities.getIterator();
+			//activities = activities.getFeed();
+			while ( it.hasNext() ) {
+			  var activity = it.next();
+						//B0CF0D4F-0D4E-468D-941CC56BD066977E contentID of Activities Folder
+						writeDump(var=activity.getAllValues(), abort=true);
+
+
+			}
+
+			writeDump(var=it, abort=true);
+		}
 
     public any function default(required rc) {
 		// rc.varName = 'whatever';
@@ -25,35 +39,23 @@ component persistent="false" accessors="true" output="false" extends="controller
         var page = 1;
         var stravaActivities = "";
         var activity = {};
+				var map = {};
         var theActivity = {};
-				var results = {newActivities="", skippedActivities=""};
-				var newActivities = [];
-				var skippedActivities = [];
-        var keyListIgnore = "returnFormat,removeobjects, errors, frommuracache, isnew, instanceid, addobjects, activityid, athlete";
-        /*
-        param name="theActivity.achievement_count" default="";
-        param name="theActivity.athlete_count" default="";
-        param name="theActivity.athleteid" default="";
-        param name="theActivity.average_cadence" default="";
-        param name="theActivity.average_heartrate" default="";
-        param name="theActivity.average_speed" default="";
-        param name="theActivity.average_temp" default="";
-        param name="theActivity.average_watts" default="";
-        param name="theActivity.calories" default="";
-        param name="theActivity.comment_count" default="";
-        param name="theActivity.commute" default="";
-        param name="theActivity.description" default="";
-        param name="theActivity.device_watts" default="";
-        param name="theActivity.kilojoules" default="0";
-        param name="theActivity.average_watts" default="0";
-        param name="theActivity.truncated" default="";
-        */
+		var theMap = {};
+		var map = {};
+		var results = {newActivities="", skippedActivities=""};
+		var newActivities = [];
+		var skippedActivities = [];
+    var keyListIgnore = "returnFormat,removeobjects, errors, frommuracache, isnew, instanceid, addobjects, activityid, athlete,upload_id";
+		var stravaActivityDetail = "";
 
-				//writeLog(text="start", file="importActivity");
-			  //abort;
+		//	theActivity = $.getBean('activity').loadBy(id='632721629');
+		//	WriteDump(var=theActivity.getMapsQuery(), abort=true);
+		//writeLog(text="start", file="importActivity");
+	  	//abort;
         while (continue eq true) {
-            stravaActivities = application.muraStrava.getActivities(arguments.perPage, page, 1);
-            //writeDump(var="#stravaActivities#", abort=true);
+            stravaActivities = application.muraStrava.getActivities(arguments.perPage, page);
+            // writeDump(var="#stravaActivities#", abort=true);
             if(arrayLen(stravaActivities) lt arguments.perPage){
                 continue = false;
             }else{
@@ -63,11 +65,15 @@ component persistent="false" accessors="true" output="false" extends="controller
             for (activity in stravaActivities){
                 //writeDump(var="#activity#", top=2, abort=true);
                 theActivity = $.getBean('activity').loadBy(id=activity.id);
-
+								theMap = theActivity.getMap();
+                //writedump(var=theActivity.getActivityId(), abort=false);
+                //writedump(var=theMap.getActivityId(), abort=false);
                 if(theActivity.getIsNew()){
 										//writeLog(text="New activity - #activity.id#", file="importActivity");
                     //writeDump(var="#theActivity.getAllValues()#", top=3, abort=true);
                     try{
+											  //activityDetail = application.muraStrava.getActivityMap(activity.id);
+												//WriteDump(var=activityDetail, abort=true );
                         for (key in theActivity.getAllValues()){
                             if(!listContainsNoCase(keyListIgnore, key)){
                                 if(!structKeyExists(activity, key)){
@@ -77,41 +83,61 @@ component persistent="false" accessors="true" output="false" extends="controller
                                 }
                             }
                         }
-                        //writeDump(var="#activity#", abort=true);
-
+                        //writeDump(var="#theActivity.get('activityid')#", abort=true);
+                        activity["id"] = theActivity.get('id');
+                        activity["activityId"] = theActivity.get('activityid');
                         activity["athleteid"] = activity.athlete.id;
-                        //structDelete(activity, "athlete");
+                        map["activityid"] = theActivity.get('activityid');
+												map["id"] = activity.map.id;
+												map["resource_state"] = activity.map.resource_state;
+												map["summary_polyline"] = ((StructKeyExists(activity.map, "summary_polyline")) ? activity.map.summary_polyline : "");
+												map["polyline"] = ((StructKeyExists(activity.map, "polyline")) ? activity.map.polyline : "");
+                        //writeDump(var=map, abort=false);
+                        theMap.setAllValues(map);
+                        theMap.save();
+                        //writeDump(var=theMap.getAllValues(), abort=false);
+                        if(isStruct(theMap.getErrors()) AND !structIsEmpty(theMap.getErrors())){
+                            writeDump(var="#theMap.getErrors()#", top=3, abort=false);
+                            writeDump(var="#theMap.getAllValues()#", top=3, abort=true);
+                        }
+                      	theActivity.setAllValues(activity);
+                        //theActivity.addMap(activity.map);
 
-                        theActivity.setAllValues(activity);
+                        //writeDump(var=theActivity.getAllValues(), abort=true);
+                        //WriteDump(var=map, abort=true);
+												//theActivity.addMap(activity.map);
 
-                        theActivity.save();
+						            theActivity.save();
+
+                        //WriteDump(var=theActivity.getAllValues(), abort=true);
+                        //WriteDump(var=theActivity.getMap().getAllValues(), abort=true);
 
 												newActivities.append(theActivity.getName());
 
                         if(isStruct(theActivity.getErrors()) AND !structIsEmpty(theActivity.getErrors())){
-                            writeDump(var="#theActivity.getErrors()#", top=3, abort=false);
-                            writeDump(var="#theActivity.getAllValues()#", top=3, abort=true);
+                            writeDump(var="#theActivity.getErrors()#", top=3, abort=false, label="Error Struct");
+                            writeDump(var="#theActivity.getAllValues()#", top=3, abort=false, label="Activity Values");
                         }
                         //writeDump(var="#theActivity.getactivityId()#", top=3, abort=false, label="new record");
                     }
                     catch(any e){
-                        writedump(var="#e#", top=3, abort=true);
+                        writedump(var="#e#", top=3, abort=false);
+            						writeDump(var="#theActivity.getErrors()#", top=3, abort=false);
+            						writeDump(var="#theActivity.getAllValues()#", top=3, abort=true);
                     }
                 }else{
 
-										 skippedActivities.append(theActivity.getName());
+						skippedActivities.append(theActivity.getName());
 
-										 //writeLog(text="Existing activity - #activity.id#", file="importActivity");
-                     //writeDump(var="#theActivity.getactivityId()#", top=3, abort=false, label="not new");
+						//writeLog(text="Existing activity - #activity.id#", file="importActivity");
+                     	//writeDump(var="#theActivity.getactivityId()#", top=3, abort=false, label="not new");
                 }
-								structUpdate(results, "newActivities", newActivities);
-								structUpdate(results, "skippedActivities", skippedActivities);
+				structUpdate(results, "newActivities", newActivities);
+				structUpdate(results, "skippedActivities", skippedActivities);
             }
-						//writeDump(var="100", abort=true);
 
-						return results;
         }
-
+		return results;
     }
 
 	public any function importAthlete(required rc) {
@@ -182,13 +208,15 @@ component persistent="false" accessors="true" output="false" extends="controller
 
 	public any function callback(required rc) {
 		param name="url.code" default="";
+    param name="url.scope" default="";
 		param name="url.state" default="";
 		param name="url.error" default="";
 		rc.result = application.muraStrava.validateResult(url.code, url.error);
-
+    //writeDump(var=rc.result, label="callback results", abort=true);
 		if (rc.result.status) {
-			$.currentUser('stravaToken', rc.result.token);
-			$.currentUser().save();
+			variables.pluginConfig.setsetting('access_token', rc.result.access_token);
+      variables.pluginConfig.setsetting('refresh_token', rc.result.refresh_token);
+      variables.pluginConfig.setsetting('expires_at', rc.result.expires_at);
 			fw.redirect(action='admin:main');
 		}
 	}
