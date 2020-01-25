@@ -184,7 +184,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 				<label>Mapbox ID</label>
 				<hint>Mapbox API user id</hint>
 				<type>text</type>
-				<required>true</required>
+				<required>false</required>
 				<validation>none</validation>
 			<!--	<regex>your javascript regex goes here (if validation=regex)</regex> -->
 				<message>Please enter your Mapbox API user id</message>
@@ -290,8 +290,8 @@ http://www.apache.org/licenses/LICENSE-2.0
 		-->
 
 		<extensions>
-			<extension type="User" subType="Default">
-				<attributeset name="Mura Strava Access Token" container="Basic">
+			<extension type="Site">
+				<attributeset name="Mura Strava" container="Default">
 					<attribute
 						name="access_token"
 						label="Strava API access token"
@@ -304,10 +304,6 @@ http://www.apache.org/licenses/LICENSE-2.0
 						message=""
 						optionList=""
 						optionLabelList="" />
-				</attributeset>
-			</extension>
-			<extension type="User" subType="Default">
-				<attributeset name="Mura Strava Refresh Token" container="Basic">
 					<attribute
 						name="refresh_token"
 						label="Strava API refresh token"
@@ -320,10 +316,6 @@ http://www.apache.org/licenses/LICENSE-2.0
 						message=""
 						optionList=""
 						optionLabelList="" />
-				</attributeset>
-			</extension>
-			<extension type="User" subType="Default">
-				<attributeset name="Mura Access Token Expiration" container="Basic">
 					<attribute
 						name="expires_at"
 						label="Strava API access token expires at"

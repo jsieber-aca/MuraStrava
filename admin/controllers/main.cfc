@@ -214,9 +214,10 @@ component persistent="false" accessors="true" output="false" extends="controller
 		rc.result = application.muraStrava.validateResult(url.code, url.error);
     //writeDump(var=rc.result, label="callback results", abort=true);
 		if (rc.result.status) {
-			variables.pluginConfig.setsetting('access_token', rc.result.access_token);
-      variables.pluginConfig.setsetting('refresh_token', rc.result.refresh_token);
-      variables.pluginConfig.setsetting('expires_at', rc.result.expires_at);
+			siteBean.set('access_token', rc.result.access_token);
+      siteBean.set('refresh_token', rc.result.refresh_token);
+      siteBean.set('expires_at', rc.result.expires_at);
+      siteBean.save();
 			fw.redirect(action='admin:main');
 		}
 	}
