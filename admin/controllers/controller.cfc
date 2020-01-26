@@ -29,6 +29,7 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		// writedump(var="#request#", abort=true, top=3);
 		// Verify that API login has been setup.
 		//writeDump(var=siteBean.get('accessToken'), abort=true);
+		//siteBean.set('access_token', "");
 		if ( (! len( siteBean.get('access_token')) || ! len(siteBean.get('expires_at'))) && ! findNoCase("login", request.action) && ! findNoCase("callback", request.action) ) {
 			fw.redirect(action='admin:main.login');
 		}

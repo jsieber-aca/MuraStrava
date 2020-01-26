@@ -161,7 +161,7 @@ component {
         // chnage this to pass these variables in or load mura scope.
         private function getAccessToken(){
 
-          //writedump(var=variables.pluginConfig.getsettings().access_token, abort=true);
+          //writedump(var=siteBean.get('expires_at'), abort=true);
           if(dateCompare(epochToDate(siteBean.get('expires_at')), now()) eq 1){
             return siteBean.get('access_token');
           }else{
@@ -201,7 +201,7 @@ component {
             var result = httpCall.send().getPreFix();
             var data = deserializeJSON(result.filecontent);
             if(isStruct(data) && structKeyExists(data, "errors") && isArray(data.errors)){
-                writeDump(var="#data#", abort=true);
+                writeDump(var="#data#", label="getData", abort=true);
             }else{
                 return data;
             }
@@ -227,13 +227,15 @@ component {
           httpCall.addParam(type="URL", name="client_id", value="#variables.client_id#");
           httpCall.addParam(type="URL", name="client_secret", value="#variables.client_secret#");
           httpCall.addParam(type="URL", name="grant_type", value="refresh_token");
-          httpCall.addParam(type="URL", name="refresh_token", value="#$.currentUser('refresh_token')#");
+          httpCall.addParam(type="URL", name="refresh_token", value="#siteBean.get('refresh_token')#");
           var result = httpCall.send().getPrefix();
           //writeDump(var=result, abort=true);
           var stravaAuthResponse = deserializeJSON(result.filecontent);
+          writeDump(var=stravaAuthResponse, abort=true);
           siteBean.set('access_token', stravaAuthResponse.access_token);
           siteBean.set('refresh_token', stravaAuthResponse.refresh_token);
           siteBean.set('expires_at', stravaAuthResponse.expires_at);
+          siteBean.save();
           //writeDump(var="#stravaAuthResponse#", label="refreshResponse", abort=true);
           return siteBean.get('access_token');
 
